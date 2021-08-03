@@ -44,6 +44,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue";
+import { fetchTasks } from "@/services/api";
 
 export default {
   name: "Home",
@@ -59,17 +60,21 @@ export default {
     };
   },
   methods: {
-    onSearch() {
-      fetch(
-        `http://127.0.0.1:5000/get_task?robotid=${this.robotId}&time=${this.time}`
-      )
-        .then((response) => response.json())
-        .then((json) => {
-          const result = JSON.parse(json.result);
-          this.result = result;
-          this.tasks = result.data;
-          this.count = result.taskcount;
-        });
+    async onSearch() {
+      // fetchTasks(
+      //   `http://127.0.0.1:5000/get_task?robotid=${this.robotId}&time=${this.time}`
+      // ).then((json) => {
+      //   const result = JSON.parse(json.result);
+      //   this.result = result;
+      //   this.tasks = result.data;
+      //   this.count = result.taskcount;
+      // });
+
+      const json = await fetchTasks(this.robotId, this.time);
+      const result = JSON.parse(json.result);
+      this.result = result;
+      this.tasks = result.data;
+      this.count = result.taskcount;
     },
     onClickTask(taskId, robotid, begintime) {
       this.$router.push({
