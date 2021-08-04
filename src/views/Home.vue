@@ -1,14 +1,13 @@
 <template>
   <div class="home">
     <div class="form">
-      <input
-        type="text"
-        name="robot_id"
-        value="请输入机器人编号"
+      <el-input
+        class="input"
         v-model="robotId"
+        placeholder="请输入机器人编号"
       />
-      <input type="text" name="time" v-model="time" value="请选择时间" />
-      <button @click.prevent="onSearch">查询</button>
+      <el-input class="input" v-model="time" placeholder="请输入日期" />
+      <el-button @click.prevent="onSearch" type="primary">查询</el-button>
     </div>
     <div class="tasks">
       <table>
@@ -29,7 +28,14 @@
           <td>{{ task.startplace }}</td>
           <td>{{ task.endplace }}</td>
           <td
-            @click="onClickTask(task.taskid, task.robotid, task.begintime)"
+            @click="
+              onClickTask(
+                task.taskid,
+                task.robotid,
+                task.begintime,
+                task.endtime
+              )
+            "
             class="taskLine"
           >
             任务路径
@@ -58,6 +64,9 @@ export default {
       time: "2021-07-27",
       count: 0,
     };
+  },
+  mounted() {
+    this.onSearch();
   },
   methods: {
     async onSearch() {
@@ -94,10 +103,14 @@ export default {
 .form {
   background-color: rgb(238, 238, 238);
   padding: 32px;
+  display: flex;
+  flex-direction: "row";
 
-  input {
-    height: 28px;
-    width: 150px;
+  .input {
+    width: initial;
+  }
+
+  div {
     margin-right: 16px;
   }
 }
