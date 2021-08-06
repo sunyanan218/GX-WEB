@@ -1,12 +1,13 @@
 <template>
   <div class="map">
     <div
-      id="header"
+      class="header"
       style="
         position: relative;
-        height: 170px;
+        height: 96px;
         background-color: #eeeeee;
         padding-right: 24px;
+        margin-top: 8px;
       "
     >
       <span style="display: flex"
@@ -33,6 +34,7 @@
         v-for="record in scramRecords"
         :key="record.id"
         :style="getPointStyle(record)"
+        style="background-color: brown"
       ></div>
       <div
         class="point"
@@ -47,6 +49,13 @@
         :key="record.id"
         :style="getPointStyle(record)"
         style="background-color: blue"
+      ></div>
+      <div
+        class="point"
+        v-for="record in data"
+        :key="record.id"
+        :style="getPointStyle(record)"
+        style="background-color: cyan; width: 5px; height: 5px"
       ></div>
     </div>
   </div>
@@ -78,7 +87,17 @@ export default {
     this.getScramData();
     this.getJumpData();
     this.getLoseData();
+    this.getData();
     this.getmap();
+    window.setInterval(() => {
+      setTimeout(this.getData(), 0);
+    }, 1000);
+    window.setInterval(() => {
+      setTimeout(this.getScramData(), 0);
+      setTimeout(this.getJumpData(), 0);
+      setTimeout(this.getLoseData(), 0);
+      setTimeout(this.getmap(), 0);
+    }, 10000);
   },
   // computed: {
   //   // 計算屬性的應用場景：原始数据无法满足页面渲染的需求时，需要经过一定的计算得到页面需要的数据。 计算属性有缓存（优点）。
@@ -99,7 +118,7 @@ export default {
       const p = this.$route.query;
       const json = await fetchSlam("急停", p.taskId);
       this.scramRecords = json.result;
-      return json.result[2].mapname;
+      return json.result[2].mapname; //应该获取data里面的地图，需要修改
     },
 
     async getJumpData() {
@@ -143,8 +162,9 @@ export default {
 .tab {
   height: 10px;
   width: 10px;
-  margin-top: 5px;
+  margin-top: 8px;
   border-radius: 50px;
+  margin-left: 16px;
 }
 
 .map {
@@ -157,7 +177,7 @@ export default {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: brown;
+  background: cyan;
   transform: translate(-50%, -50%);
 }
 </style>
