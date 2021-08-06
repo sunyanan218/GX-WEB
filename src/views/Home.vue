@@ -67,6 +67,9 @@ export default {
   },
   mounted() {
     this.onSearch();
+    // window.setInterval(() => {
+    //   setTimeout(this.onSearch(), 0);
+    // }, 100000);
   },
   methods: {
     async onSearch() {
